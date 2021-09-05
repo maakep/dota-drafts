@@ -1,0 +1,18 @@
+POST http://localhost:3000/draft
+Content-Type: application/json
+
+{
+    "pos1": "Clinkz",
+    "pos2": "Warlock",
+    "pos3": "Winter Wyvern",
+    "pos4": "Elder Titan",
+    "pos5": "Void Spirit",
+    "title": "The cache testers",
+    "description": "Doing more testing"
+}
+
+
+###
+
+GET http://localhost:3000/The cache testers
+

@@ -1,0 +1,30 @@
+{
+  "name": "dota-team",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm i && webpack --mode production && node backend/index.js",
+    "build": "webpack --mode development",
+    "watch": "webpack --watch --mode development",
+    "backend": "node backend/index.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-react": "^7.14.5",
+    "@emotion/babel-plugin": "^11.3.0",
+    "babel-loader": "^8.2.2",
+    "cron": "^1.8.2",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.14.2",
+    "react-spinners": "^0.11.0",
+    "styled-components": "^5.3.1",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

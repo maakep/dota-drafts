@@ -1,0 +1,4 @@
+{
+  "presets": ["@babel/preset-react"], // might need @babel/preset-env
+  "plugins": ["@emotion"]
+}
