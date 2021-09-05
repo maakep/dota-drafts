@@ -14,10 +14,7 @@ export function App() {
   useEffect(async () => {
     const res = await fetch('/api/drafts');
     const json = await res.json();
-    const sleeper = await artificialLoadingTime(1000);
-
-    const all = await Promise.all([json, res, sleeper]);
-    setDrafts(all[0]);
+    setDrafts(json);
   }, []);
 
   return (
