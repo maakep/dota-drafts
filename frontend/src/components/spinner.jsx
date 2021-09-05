@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import SpinnerAnimation from 'react-spinners/GridLoader';
-import { Column } from '../lib/Layout';
 
 // TODO: Replace with skeleton entities
 export function Spinner() {

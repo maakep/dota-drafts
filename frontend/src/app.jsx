@@ -12,7 +12,7 @@ export function App() {
   useEffect(async () => {
     const res = await fetch('./drafts');
     const json = await res.json();
-    const sleeper = await artificialLoadingTime(100000);
+    const sleeper = await artificialLoadingTime(1000);
 
     const all = await Promise.all([json, res, sleeper]);
     setDrafts(all[0]);
@@ -20,9 +20,7 @@ export function App() {
 
   return (
     <Body>
-      <Header>
-        <div>Logo or smth</div>
-      </Header>
+      <Header />
       {/* TODO: add router*/}
       <Content>
         <CenterLayout>
