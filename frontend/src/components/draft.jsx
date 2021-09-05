@@ -5,12 +5,12 @@ import { getHeroInUrl } from '../lib/hero-lib';
 
 export function Draft(props) {
   const [show, setShow] = React.useState(false);
-  const { draft } = props;
+  const { draft = {} } = props;
 
   return (
     <DraftRow onClick={() => setShow(!show)}>
       <Row>
-        <Item>{draft.title}</Item>
+        <Item style={{ height: 19 }}>{draft.title}</Item>
       </Row>
       <Heroes>
         <Lane>
@@ -67,14 +67,16 @@ const Hero = styled.div`
   height: 63px;
   width: 112px;
   background-color: #c5c5c5;
-  background: linear-gradient(
+  ${(p) =>
+    p.hero &&
+    `background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 40%,
       rgba(0, 0, 0, 0.8)
     ),
-    url('https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${(
-      p,
-    ) => getHeroInUrl(p.hero)}.png');
+    url('https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${getHeroInUrl(
+      p.hero,
+    )}.png');`}
   background-size: cover;
   color: white;
   padding: 4px;
