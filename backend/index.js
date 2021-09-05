@@ -45,29 +45,23 @@ async function refreshCache() {
 
 /* - - - - - */
 
-app.get('/', (req, res) => {
-  res.status(200).sendFile('index.html', {
-    root: path.resolve(__dirname + '/..'),
-  });
-});
-
 app.get('*.js', (req, res) => {
   res.status(200).sendFile(req.path, {
     root: path.resolve(__dirname + '/..'),
   });
 });
 
-app.get('/drafts', (req, res) => {
+app.get('/api/drafts', (req, res) => {
   res.status(200).json(draftsCache);
 });
 
-app.get('/:draftId', (req, res) => {
+app.get('/api/drafts/:draftId', (req, res) => {
   const { draftId } = req.params;
   const draft = draftsCache.find((x) => x.title == draftId || x._id == draftId);
   res.status(draft == undefined ? 404 : 200).send(draft);
 });
 
-app.post('/draft', async (req, res) => {
+app.post('/api/draft', async (req, res) => {
   const { pos1, pos2, pos3, pos4, pos5, title, description } = req.body;
   const draft = {
     pos1,
@@ -99,6 +93,12 @@ app.post('/draft', async (req, res) => {
   }
 
   res.status(r.acknowledged ? 200 : 500).json({ id: r.insertedId });
+});
+
+app.get('/*', (req, res) => {
+  res.status(200).sendFile('index.html', {
+    root: path.resolve(__dirname + '/..'),
+  });
 });
 
 app.listen(port, () => {

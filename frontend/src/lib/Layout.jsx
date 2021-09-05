@@ -34,6 +34,7 @@ const CenterLayoutWrapperDiv = styled.div`
 `;
 
 const CenterLayoutDiv = styled.div`
-  width: 1280px;
+  max-width: 1280px;
+  width: 100%;
   background: #d9d9d9;
 `;

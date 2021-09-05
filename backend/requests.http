@@ -1,4 +1,4 @@
-POST http://localhost:3000/draft
+POST http://localhost:3000/api/draft
 Content-Type: application/json
 
 {
@@ -14,5 +14,5 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/The cache testers
+GET http://localhost:3000/api/The cache testers
 

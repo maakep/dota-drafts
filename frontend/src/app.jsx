@@ -5,12 +5,14 @@ import { Spinner } from './components/spinner';
 import { DraftList } from './components/draft-list';
 import { Header } from './components/header';
 import { CenterLayout } from './lib/Layout';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { SingleDraftPage } from './components/draft-page';
 
 export function App() {
   const [drafts, setDrafts] = useState([]);
 
   useEffect(async () => {
-    const res = await fetch('./drafts');
+    const res = await fetch('/api/drafts');
     const json = await res.json();
     const sleeper = await artificialLoadingTime(1000);
 
@@ -19,16 +21,31 @@ export function App() {
   }, []);
 
   return (
-    <Body>
-      <Header />
-      {/* TODO: add router*/}
-      <Content>
-        <CenterLayout>
-          {!drafts.length ? <Spinner /> : <DraftList drafts={drafts} />}
-        </CenterLayout>
-      </Content>
-      <Footer />
-    </Body>
+    <BrowserRouter>
+      <Body>
+        <Header />
+        <Content>
+          <CenterLayout>
+            {!drafts.length ? (
+              <Spinner />
+            ) : (
+              <Switch>
+                <Route path='/draft/new'>
+                  <div>draft page ayy</div>
+                </Route>
+                <Route path='/draft/:draftId'>
+                  <SingleDraftPage drafts={drafts} />
+                </Route>
+                <Route path='/'>
+                  <DraftList drafts={drafts} />
+                </Route>
+              </Switch>
+            )}
+          </CenterLayout>
+        </Content>
+        <Footer />
+      </Body>
+    </BrowserRouter>
   );
 }
 

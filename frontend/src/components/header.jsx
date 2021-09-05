@@ -1,14 +1,17 @@
 import * as React from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { CenterLayout, Row } from '../lib/Layout';
 
 export function Header() {
+  const history = useHistory();
+
   return (
     <Wrapper>
       <CenterLayout>
         <Row>
-          <Logo />
-          <AddDraft onClick={() => alert('soon')}>+</AddDraft>
+          <Logo onClick={() => history.push('/')} />
+          <AddDraft onClick={() => history.push('/draft/new')}>+</AddDraft>
         </Row>
       </CenterLayout>
     </Wrapper>
@@ -25,6 +28,7 @@ const Logo = styled.div`
   height: 70px;
   width: 120px;
   background-color: #d1d1d1;
+  cursor: pointer;
 `;
 
 const AddDraft = styled.div`

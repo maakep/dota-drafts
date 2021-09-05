@@ -25,7 +25,7 @@ export function Draft(props) {
           <Hero hero={draft.pos5}>5 {draft.pos5}</Hero>
         </Lane>
       </Heroes>
-      {show && <Row>{draft.description}</Row>}
+      {(show || props.alwaysVisible) && <Row>{draft.description}</Row>}
     </DraftRow>
   );
 }
@@ -57,6 +57,7 @@ const Lane = styled.div`
 const Heroes = styled.div`
   display: flex;
   flex-direction: flex-row;
+  flex-wrap: wrap;
 `;
 
 const Hero = styled.div`
