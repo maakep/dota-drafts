@@ -24,7 +24,7 @@ export function App() {
       {/* TODO: add router*/}
       <Content>
         <CenterLayout>
-          {!drafts.length ? <Spinner /> : <DraftList />}
+          {!drafts.length ? <Spinner /> : <DraftList drafts={drafts} />}
         </CenterLayout>
       </Content>
       <Footer />
