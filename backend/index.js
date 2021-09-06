@@ -31,7 +31,7 @@ const html = fs.readFileSync(
 
 /* - - - - - */
 
-const mongoKey = process.env.mongokey || require('./secrets.js');
+const mongoKey = process.env.mongokey;
 const client = new MongoClient(mongoKey);
 
 let draftsCache = [];
