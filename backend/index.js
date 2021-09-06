@@ -1,18 +1,33 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const CronJob = require('cron').CronJob;
+
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+const { App } = require('../frontend/src/app');
+const { StaticRouter } = require('react-router-dom');
+const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/public', express.static('../../public'));
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("That ain't right");
 });
+
+/* - - - - - */
+
+const html = fs.readFileSync(
+  path.resolve(__dirname, '../../index.html'),
+  'utf8',
+);
 
 /* - - - - - */
 
@@ -45,9 +60,9 @@ async function refreshCache() {
 
 /* - - - - - */
 
-app.get('*.js', (req, res) => {
+app.get('*.(js|ttf)', (req, res) => {
   res.status(200).sendFile(req.path, {
-    root: path.resolve(__dirname + '/..'),
+    root: path.resolve(__dirname + '/../..'),
   });
 });
 
@@ -96,9 +111,26 @@ app.post('/api/draft', async (req, res) => {
 });
 
 app.get('/*', (req, res) => {
-  res.status(200).sendFile('index.html', {
-    root: path.resolve(__dirname + '/..'),
-  });
+  const sheet = new ServerStyleSheet();
+  const appString = ReactDOMServer.renderToString(
+    sheet.collectStyles(
+      <StaticRouter location={req.url} context={{}}>
+        <App drafts={draftsCache} />
+      </StaticRouter>,
+    ),
+  );
+  const styleTags = sheet.getStyleTags();
+
+  sheet.seal();
+  res.status(200).send(
+    html
+      .replace('<stylegoeshere />', styleTags)
+      .replace(
+        '<datagoeshere />',
+        `<script>window._draftData = ${JSON.stringify(draftsCache)}</script>`,
+      )
+      .replace('></div>', `>${appString}</div>`),
+  );
 });
 
 app.listen(port, () => {

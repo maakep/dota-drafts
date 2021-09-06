@@ -22,5 +22,5 @@ const heroes = {
 };
 
 export function getHeroInUrl(heroName) {
-  return heroes[heroName] || heroName.toLowerCase().replaceAll(' ', '_');
+  return heroes[heroName] || heroName.replace(/\s/g, '_').toLowerCase();
 }

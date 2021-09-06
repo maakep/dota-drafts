@@ -1,53 +1,35 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { Spinner } from './components/spinner';
 import { DraftList } from './components/draft-list';
 import { Header } from './components/header';
 import { CenterLayout } from './lib/Layout';
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { SingleDraftPage } from './components/draft-page';
 
-export function App() {
-  const [drafts, setDrafts] = useState([]);
-
-  useEffect(async () => {
-    const res = await fetch('/api/drafts');
-    const json = await res.json();
-    setDrafts(json);
-  }, []);
+export function App(props) {
+  const { drafts } = props;
 
   return (
-    <BrowserRouter>
-      <Body>
-        <Header />
-        <Content>
-          <CenterLayout>
-            {!drafts.length ? (
-              <Spinner />
-            ) : (
-              <Switch>
-                <Route path='/draft/new'>
-                  <div>draft page ayy</div>
-                </Route>
-                <Route path='/draft/:draftId'>
-                  <SingleDraftPage drafts={drafts} />
-                </Route>
-                <Route path='/'>
-                  <DraftList drafts={drafts} />
-                </Route>
-              </Switch>
-            )}
-          </CenterLayout>
-        </Content>
-        <Footer />
-      </Body>
-    </BrowserRouter>
+    <Body>
+      <Header />
+      <Content>
+        <CenterLayout>
+          <Switch>
+            <Route path='/draft/new'>
+              <div>draft page ayy</div>
+            </Route>
+            <Route path='/draft/:draftId'>
+              <SingleDraftPage drafts={drafts} />
+            </Route>
+            <Route path='/'>
+              <DraftList drafts={drafts} />
+            </Route>
+          </Switch>
+        </CenterLayout>
+      </Content>
+      <Footer />
+    </Body>
   );
-}
-
-function artificialLoadingTime(ms) {
-  return new Promise((r) => setTimeout(r, ms));
 }
 
 const Body = styled.div`
