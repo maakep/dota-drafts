@@ -9,6 +9,7 @@ const ReactDOMServer = require('react-dom/server');
 const { App } = require('../frontend/src/app');
 const { StaticRouter } = require('react-router-dom');
 const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
+const { heroes } = require('../frontend/src/lib/hero-lib');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -88,7 +89,10 @@ app.post('/api/draft', async (req, res) => {
     description,
   };
 
-  if (anyUndefined([pos1, pos2, pos3, pos4, pos5, title])) {
+  if (
+    anyUndefined([pos1, pos2, pos3, pos4, pos5, title]) ||
+    !allValidHeroNames(draft)
+  ) {
     return res.sendStatus(400);
   }
 
@@ -133,9 +137,20 @@ app.get('/*', (req, res) => {
   );
 });
 
-app.listen(port, () => {
-  console.log('Listening on port ', port);
-});
+function anyUndefined(array) {
+  return array.indexOf(undefined) != -1 || array.indexOf(null) != -1;
+}
+
+function allValidHeroNames(draft) {
+  const { pos1, pos2, pos3, pos4, pos5 } = draft;
+  return [pos1, pos2, pos3, pos4, pos5].every((p) => validateHeroName(p));
+}
+
+function validateHeroName(name) {
+  return name == '' || heroes.hasOwnProperty(name);
+}
+
+/* - - - - */
 
 async function setupDatabaseAndCollections() {
   const db = await client.db('dota');
@@ -145,6 +160,8 @@ async function setupDatabaseAndCollections() {
   await client.close();
 }
 
-function anyUndefined(array) {
-  return array.indexOf(undefined) != -1 || array.indexOf(null) != -1;
-}
+/* - - - - */
+
+app.listen(port, () => {
+  console.log('Listening on port ', port);
+});

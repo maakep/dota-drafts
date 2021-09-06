@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { Row } from '../lib/Layout';
 
 export function DraftForm() {
   const { register, handleSubmit } = useForm();
+  const history = useHistory();
 
   async function onSubmit(d) {
     const res = await fetch('/api/draft', {
@@ -14,6 +16,10 @@ export function DraftForm() {
       },
       body: JSON.stringify(d),
     });
+    if (res.status == 200) {
+      const json = await res.json();
+      window.location.href = '/draft/' + json.id;
+    }
   }
 
   return (

@@ -2,7 +2,7 @@ POST http://localhost:3000/api/draft
 Content-Type: application/json
 
 {
-    "pos1": "Clinkz",
+    "pos1": "",
     "pos2": "Warlock",
     "pos3": "Winter Wyvern",
     "pos4": "Elder Titan",
