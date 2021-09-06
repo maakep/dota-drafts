@@ -5,6 +5,7 @@ import { Header } from './components/header';
 import { CenterLayout } from './lib/Layout';
 import { Route, Switch } from 'react-router-dom';
 import { SingleDraftPage } from './components/draft-page';
+import { DraftForm } from './components/draft-form';
 
 export function App(props) {
   const { drafts } = props;
@@ -16,7 +17,7 @@ export function App(props) {
         <CenterLayout>
           <Switch>
             <Route path='/draft/new'>
-              <div>draft page ayy</div>
+              <DraftForm />
             </Route>
             <Route path='/draft/:draftId'>
               <SingleDraftPage drafts={drafts} />

@@ -1,14 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-export function Row({ children }) {
-  return <RowDiv>{children}</RowDiv>;
-}
-
-export function Column({ children }) {
-  return <ColumnDiv>{children}</ColumnDiv>;
-}
-
 export function CenterLayout({ children }) {
   return (
     <CenterLayoutWrapperDiv>
@@ -17,12 +9,12 @@ export function CenterLayout({ children }) {
   );
 }
 
-const RowDiv = styled.div`
+export const Row = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
-const ColumnDiv = styled.div`
+export const Column = styled.div`
   display: flex;
   flex-direction: column;
 `;
