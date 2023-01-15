@@ -1,6 +1,4 @@
-# Use the official lightweight Node.js 12 image.
-# https://hub.docker.com/_/node
-FROM node:12-slim
+FROM node:19-alpine3.16
 
 WORKDIR /app
 

@@ -1,18 +1,16 @@
 import React from 'react';
-import { createRoot, hydrateRoot } from 'react-dom/client';
-import { App } from './app.jsx';
+import { hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { App } from './app.jsx';
 
-const rt = createRoot(document.getElementById('root'));
-
-rt.render(
+const root = hydrateRoot(
+  document.getElementById('root'),
   <BrowserRouter>
     <App drafts={window._draftData} />
   </BrowserRouter>,
 );
 
-// const root = hydrateRoot(
-//   document.getElementById('root'),
+// root.render(
 //   <BrowserRouter>
 //     <App drafts={window._draftData} />
 //   </BrowserRouter>,
