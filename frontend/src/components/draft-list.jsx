@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { Column, Row } from '../lib/Layout';
-import styled from 'styled-components';
+import React from 'react';
+import { Column } from '../lib/Layout';
 import { Draft } from './draft';
 
 export function DraftList(props) {

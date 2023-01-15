@@ -1,17 +1,17 @@
-import * as React from 'react';
-import { useHistory } from 'react-router';
+import React from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { CenterLayout, Row } from '../lib/Layout';
 
 export function Header() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
       <CenterLayout>
         <Row>
-          <Logo onClick={() => history.push('/')} />
-          <AddDraft onClick={() => history.push('/draft/new')}>+</AddDraft>
+          <Logo onClick={() => navigate('/')} />
+          <AddDraft onClick={() => navigate('/draft/new')}>+</AddDraft>
         </Row>
       </CenterLayout>
     </Wrapper>

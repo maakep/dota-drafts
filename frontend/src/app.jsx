@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { DraftList } from './components/draft-list';
 import { Header } from './components/header';
 import { CenterLayout } from './lib/Layout';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { SingleDraftPage } from './components/draft-page';
 import { DraftForm } from './components/draft-form';
 
@@ -15,17 +15,14 @@ export function App(props) {
       <Header />
       <Content>
         <CenterLayout>
-          <Switch>
-            <Route path='/draft/new'>
-              <DraftForm />
-            </Route>
-            <Route path='/draft/:draftId'>
-              <SingleDraftPage drafts={drafts} />
-            </Route>
-            <Route path='/'>
-              <DraftList drafts={drafts} />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path='/draft/new' element={<DraftForm />} />
+            <Route
+              path='/draft/:draftId'
+              element={<SingleDraftPage drafts={drafts} />}
+            />
+            <Route path='/' element={<DraftList drafts={drafts} />} />
+          </Routes>
         </CenterLayout>
       </Content>
       <Footer />

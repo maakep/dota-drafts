@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Draft } from './draft';
 import { useParams } from 'react-router-dom';
 

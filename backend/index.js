@@ -1,18 +1,16 @@
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const { MongoClient } = require('mongodb');
-const CronJob = require('cron').CronJob;
-
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
+const { StaticRouter } = require('react-router-dom/server');
+
 const { App } = require('../frontend/src/app');
-const { StaticRouter } = require('react-router-dom');
-const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
+const { ServerStyleSheet } = require('styled-components');
 const { heroes } = require('../frontend/src/lib/hero-lib');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,43 +21,12 @@ app.use((err, req, res, next) => {
   res.status(500).send("That ain't right");
 });
 
-/* - - - - - */
+const draftsCache = [];
 
 const html = fs.readFileSync(
   path.resolve(__dirname, '../../index.html'),
   'utf8',
 );
-
-/* - - - - - */
-
-const mongoKey = process.env.mongokey || eval(`require('../secrets.js')`);
-const client = new MongoClient(mongoKey);
-
-let draftsCache = [];
-
-refreshCache();
-// every second hour
-const cacheRefreshJob = new CronJob(
-  '0 0 */2 * * *',
-  () => {
-    refreshCache();
-  },
-  null,
-  true,
-);
-
-async function refreshCache() {
-  await client.connect();
-  const db = client.db('dota');
-  const collection = db.collection('comps');
-  const findAll = collection.find({});
-  const res = await findAll.toArray();
-  draftsCache = res;
-  console.log(draftsCache);
-  client.close();
-}
-
-/* - - - - - */
 
 app.get('*.(js|ttf)', (req, res) => {
   res.status(200).sendFile(req.path, {
@@ -68,7 +35,7 @@ app.get('*.(js|ttf)', (req, res) => {
 });
 
 app.get('/api/drafts', (req, res) => {
-  res.status(200).json(draftsCache);
+  res.status(200).json([draftsCache]);
 });
 
 app.get('/api/drafts/:draftId', (req, res) => {
@@ -96,13 +63,7 @@ app.post('/api/draft', async (req, res) => {
     return res.sendStatus(400);
   }
 
-  await client.connect();
-
-  const db = client.db('dota');
-  var comps = db.collection('comps');
-  const r = await comps.insertOne(draft);
-
-  await client.close();
+  // TODO: Add to db
 
   if (r.acknowledged) {
     draftsCache.push({
@@ -150,18 +111,6 @@ function validateHeroName(name) {
   return name == '' || heroes.hasOwnProperty(name);
 }
 
-/* - - - - */
-
-async function setupDatabaseAndCollections() {
-  const db = await client.db('dota');
-  db.collection();
-  await client.connect();
-  const comp = await db.createCollection('comps');
-  await client.close();
-}
-
-/* - - - - */
-
-app.listen(port, () => {
-  console.log('Listening on port ', port);
+app.listen(PORT, () => {
+  console.log('Listening on port ', PORT);
 });

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Row } from '../lib/Layout';
 import styled from 'styled-components';
 import { getHeroInUrl } from '../lib/hero-lib';

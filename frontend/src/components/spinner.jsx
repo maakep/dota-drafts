@@ -1,6 +1,4 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import SpinnerAnimation from 'react-spinners/GridLoader';
+import React from 'react';
 import { Draft } from './draft';
 import { Column } from '../lib/Layout';
 
