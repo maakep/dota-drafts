@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "npm ci && npm run frontend && npm run backend",
-    "build": "webpack --mode development",
-    "watch": "webpack --watch --mode development",
     "frontend": "webpack --mode production",
-    "backend": "webpack --mode production --config webpack.server.js && node backend/dist/bundle.server.js"
+    "frontend:build": "webpack --mode development",
+    "frontend:watch": "webpack --watch --mode development",
+    "backend": "webpack --mode production --config webpack.server.js && node backend/dist/bundle.server.js",
+    "backend:debug": "set GOOGLE_APPLICATION_CREDENTIALS=./servicekey.json&& webpack --mode development --config webpack.server.js && node backend/dist/bundle.server.js"
   },
   "dependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-react": "^7.14.5",
     "@emotion/babel-plugin": "^11.3.0",
-    "babel-loader": "^9.1.2", 
+    "@google-cloud/firestore": "^6.4.2",
+    "babel-loader": "^9.1.2",
     "express": "^4.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

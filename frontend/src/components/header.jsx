@@ -11,7 +11,7 @@ export function Header() {
       <CenterLayout>
         <Row>
           <Logo onClick={() => navigate('/')} />
-          <AddDraft onClick={() => navigate('/draft/new')}>+</AddDraft>
+          <AddDraft onClick={() => navigate('/new')}>create</AddDraft>
         </Row>
       </CenterLayout>
     </Wrapper>
@@ -33,9 +33,9 @@ const Logo = styled.div`
 
 const AddDraft = styled.div`
   height: 70px;
-  width: 70px;
+  padding: 0 8px;
   line-height: 70px;
-  font-size: 30px;
+  font-size: 15px;
   text-align: center;
   cursor: pointer;
   color: #005500;

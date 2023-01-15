@@ -7,7 +7,10 @@ const { StaticRouter } = require('react-router-dom/server');
 
 const { App } = require('../frontend/src/app');
 const { ServerStyleSheet } = require('styled-components');
-const { heroes } = require('../frontend/src/lib/hero-lib');
+const { HEROES_LIB: ALL_HEROES } = require('../frontend/src/lib/hero-lib');
+
+const db = require('./db');
+const dota = require('./dota');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -22,6 +25,15 @@ app.use((err, req, res, next) => {
 });
 
 const draftsCache = [];
+let version = new Date();
+
+dota.getVersion().then((x) => {
+  version = x;
+});
+db.loadAllDrafts().then((x) => {
+  console.log(x);
+  draftsCache.push(...x);
+});
 
 const html = fs.readFileSync(
   path.resolve(__dirname, '../../index.html'),
@@ -41,11 +53,14 @@ app.get('/api/drafts', (req, res) => {
 app.get('/api/drafts/:draftId', (req, res) => {
   const { draftId } = req.params;
   const draft = draftsCache.find((x) => x.title == draftId || x._id == draftId);
+  console.log(draftsCache);
   res.status(draft == undefined ? 404 : 200).send(draft);
 });
 
 app.post('/api/draft', async (req, res) => {
-  const { pos1, pos2, pos3, pos4, pos5, title, description } = req.body;
+  const { pos1, pos2, pos3, pos4, pos5, title, description, tags, heroes } =
+    req.body;
+
   const draft = {
     pos1,
     pos2,
@@ -54,25 +69,47 @@ app.post('/api/draft', async (req, res) => {
     pos5,
     title,
     description,
+    tags,
   };
 
-  if (
-    anyUndefined([pos1, pos2, pos3, pos4, pos5, title]) ||
-    !allValidHeroNames(draft)
-  ) {
-    return res.sendStatus(400);
+  const combo = {
+    heroes,
+    title,
+    description,
+    tags,
+  };
+
+  const isCombo = heroes != undefined;
+
+  if (title == undefined) {
+    return res.status(400).send('Missing title');
   }
 
-  // TODO: Add to db
+  if (isCombo && !validateHeroNames(combo.heroes)) {
+    return res.status(400).send('Incorrect hero name');
+  }
 
-  if (r.acknowledged) {
+  if (
+    !isCombo &&
+    (anyUndefined([pos1, pos2, pos3, pos4, pos5]) ||
+      !draftValidHeroNames(draft))
+  ) {
+    return res.status(400).send('Missing position or incorrect hero name');
+  }
+
+  const id = await db.addDraft({
+    ...(isCombo ? combo : draft),
+    version: version,
+  });
+
+  if (id) {
     draftsCache.push({
       ...draft,
-      _id: r.insertedId,
+      _id: id,
     });
   }
 
-  res.status(r.acknowledged ? 200 : 500).json({ id: r.insertedId });
+  res.status(id != undefined ? 200 : 500).json({ id: id });
 });
 
 app.get('/*', (req, res) => {
@@ -102,13 +139,16 @@ function anyUndefined(array) {
   return array.indexOf(undefined) != -1 || array.indexOf(null) != -1;
 }
 
-function allValidHeroNames(draft) {
+function draftValidHeroNames(draft) {
   const { pos1, pos2, pos3, pos4, pos5 } = draft;
   return [pos1, pos2, pos3, pos4, pos5].every((p) => validateHeroName(p));
 }
+function validateHeroNames(listOfheroes) {
+  return listOfheroes.every((h) => validateHeroName(h));
+}
 
 function validateHeroName(name) {
-  return name == '' || heroes.hasOwnProperty(name);
+  return name == '' || ALL_HEROES.hasOwnProperty(name);
 }
 
 app.listen(PORT, () => {

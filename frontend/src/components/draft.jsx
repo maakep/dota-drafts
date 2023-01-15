@@ -5,7 +5,10 @@ import { getHeroInUrl } from '../lib/hero-lib';
 
 export function Draft(props) {
   const [show, setShow] = React.useState(false);
-  const { draft = {} } = props;
+  const { draft } = props;
+
+  const isCombo = draft?.heroes != undefined;
+  console.log(draft);
 
   return (
     <DraftRow onClick={() => setShow(!show)}>
@@ -13,17 +16,29 @@ export function Draft(props) {
         <Item style={{ height: 19 }}>{draft.title}</Item>
       </Row>
       <Heroes>
-        <Lane>
-          <Hero hero={draft.pos3}>3 {draft.pos3}</Hero>
-          <Hero hero={draft.pos4}>4 {draft.pos4}</Hero>
-        </Lane>
-        <Lane>
-          <Hero hero={draft.pos2}>2 {draft.pos2}</Hero>
-        </Lane>
-        <Lane>
-          <Hero hero={draft.pos1}>1 {draft.pos1}</Hero>
-          <Hero hero={draft.pos5}>5 {draft.pos5}</Hero>
-        </Lane>
+        {isCombo ? (
+          <Lane>
+            {draft.heroes.map((x) => (
+              <Hero key={x} hero={x}>
+                {x}
+              </Hero>
+            ))}
+          </Lane>
+        ) : (
+          <>
+            <Lane>
+              <Hero hero={draft.pos3}>3 {draft.pos3}</Hero>
+              <Hero hero={draft.pos4}>4 {draft.pos4}</Hero>
+            </Lane>
+            <Lane>
+              <Hero hero={draft.pos2}>2 {draft.pos2}</Hero>
+            </Lane>
+            <Lane>
+              <Hero hero={draft.pos1}>1 {draft.pos1}</Hero>
+              <Hero hero={draft.pos5}>5 {draft.pos5}</Hero>
+            </Lane>
+          </>
+        )}
       </Heroes>
       {(show || props.alwaysVisible) && <Row>{draft.description}</Row>}
     </DraftRow>

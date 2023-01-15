@@ -3,20 +3,17 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Row } from '../lib/Layout';
 
-export function DraftForm() {
+export function ComboForm() {
   const { register, handleSubmit } = useForm();
 
   async function onSubmit(d) {
     const body = {
       title: d.title,
       description: d.description,
-      pos1: d.pos1,
-      pos2: d.pos2,
-      pos3: d.pos3,
-      pos4: d.pos4,
-      pos5: d.pos5,
+      heroes: [d.hero1, d.hero2, d.hero3, d.hero4].filter((x) => x != ''),
       tags: d.tags.split(',').map((x) => x.trim()),
     };
+
     const res = await fetch('/api/draft', {
       method: 'POST',
       headers: {
@@ -43,24 +40,19 @@ export function DraftForm() {
           <textarea {...register('description')} autoComplete='off' />
         </FieldRow>
         <FieldRow>
-          <Label>Pos1</Label>
-          <input {...register('pos1')} autoComplete='off' />
+          <h3>Heroes</h3>
         </FieldRow>
         <FieldRow>
-          <Label>Pos2</Label>
-          <input {...register('pos2')} autoComplete='off' />
+          <input {...register('hero1')} autoComplete='off' />
         </FieldRow>
         <FieldRow>
-          <Label>Pos3</Label>
-          <input {...register('pos3')} autoComplete='off' />
+          <input {...register('hero2')} autoComplete='off' />
         </FieldRow>
         <FieldRow>
-          <Label>Pos4</Label>
-          <input {...register('pos4')} autoComplete='off' />
+          <input {...register('hero3')} autoComplete='off' />
         </FieldRow>
         <FieldRow>
-          <Label>Pos5</Label>
-          <input {...register('pos5')} autoComplete='off' />
+          <input {...register('hero4')} autoComplete='off' />
         </FieldRow>
         <FieldRow>
           <Label>Tags</Label>
