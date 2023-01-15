@@ -1,4 +1,4 @@
-export const heroes = {
+export const ALL_HEROES = {
   'Anti-Mage': 'antimage',
   Axe: 'axe',
   Bane: 'bane',

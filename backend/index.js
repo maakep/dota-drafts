@@ -7,7 +7,7 @@ const { StaticRouter } = require('react-router-dom/server');
 
 const { App } = require('../frontend/src/app');
 const { ServerStyleSheet } = require('styled-components');
-const { HEROES_LIB: ALL_HEROES } = require('../frontend/src/lib/hero-lib');
+const { ALL_HEROES } = require('../frontend/src/lib/hero-lib');
 
 const db = require('./db');
 const dota = require('./dota');
