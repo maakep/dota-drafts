@@ -123,5 +123,5 @@ export const ALL_HEROES = {
 };
 
 export function getHeroInUrl(heroName) {
-  return heroes[heroName] || heroName.replace(/\s/g, '_').toLowerCase();
+  return ALL_HEROES[heroName] || heroName.replace(/\s/g, '_').toLowerCase();
 }
