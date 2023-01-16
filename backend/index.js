@@ -96,7 +96,6 @@ app.post('/api/draft', async (req, res) => {
   ) {
     return res.status(400).send('Missing position or incorrect hero name');
   }
-
   const id = await db.addDraft({
     ...(isCombo ? combo : draft),
     version: version,
@@ -104,7 +103,7 @@ app.post('/api/draft', async (req, res) => {
 
   if (id) {
     draftsCache.push({
-      ...draft,
+      ...(isCombo ? combo : draft),
       _id: id,
     });
   }
