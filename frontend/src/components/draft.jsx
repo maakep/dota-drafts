@@ -8,7 +8,6 @@ export function Draft(props) {
   const { draft } = props;
 
   const isCombo = draft?.heroes != undefined;
-  console.log(draft);
 
   return (
     <DraftRow onClick={() => setShow(!show)}>
@@ -18,7 +17,7 @@ export function Draft(props) {
       <Heroes>
         {isCombo ? (
           <Lane>
-            {draft.heroes.map((x) => (
+            {draft.heroes?.map((x) => (
               <Hero key={x} hero={x}>
                 {x}
               </Hero>
