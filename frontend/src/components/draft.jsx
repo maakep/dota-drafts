@@ -2,18 +2,44 @@ import React from 'react';
 import { Row } from '../lib/Layout';
 import styled from 'styled-components';
 import { getHeroInUrl } from '../lib/hero-lib';
+import { DisplayTags } from './tags';
+import { UnadornedLink } from '../lib/components';
 
 export function Draft(props) {
   const [show, setShow] = React.useState(false);
+  const [copyFeedback, setCopyFeedback] = React.useState(false);
+
+  function onCopy() {
+    setCopyFeedback(true);
+    setTimeout(() => {
+      setCopyFeedback(false);
+    }, 1000);
+  }
   const { draft } = props;
 
   const isCombo = draft?.heroes != undefined;
 
   return (
     <DraftRow onClick={() => setShow(!show)}>
-      <Row>
+      <BetweenRow>
         <Item style={{ height: 19 }}>{draft.title}</Item>
-      </Row>
+        <Row>
+          <Item
+            onClick={(e) => {
+              e.stopPropagation();
+              navigator.clipboard.writeText(
+                location.host + `/draft/${draft._id}`,
+              );
+              onCopy();
+            }}
+          >
+            {copyFeedback ? '✔️' : '📄'}
+          </Item>
+          <Item>
+            <UnadornedLink to={`/draft/${draft._id}`}>🔗</UnadornedLink>
+          </Item>
+        </Row>
+      </BetweenRow>
       <Heroes>
         {isCombo ? (
           <Lane>
@@ -39,10 +65,27 @@ export function Draft(props) {
           </>
         )}
       </Heroes>
-      {(show || props.alwaysVisible) && <Row>{draft.description}</Row>}
+      {(show || props.alwaysVisible) && (
+        <BetweenRow>
+          <Desc>{draft.description}</Desc>
+          <div>
+            <DisplayTags randomizeColor tags={draft.tags} />
+          </div>
+        </BetweenRow>
+      )}
     </DraftRow>
   );
 }
+
+const Desc = styled.div`
+  width: 50%;
+  padding: 8px;
+`;
+
+const BetweenRow = styled(Row)`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const DraftRow = styled.div`
   margin-top: 16px;
@@ -60,7 +103,9 @@ const DraftRow = styled.div`
   }
 `;
 
-const Item = styled.div``;
+const Item = styled.div`
+  padding: 8px;
+`;
 
 const Lane = styled.div`
   display: flex;

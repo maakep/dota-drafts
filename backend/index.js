@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/public', express.static('../../public'));
+app.use('/public', express.static('public'));
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -31,7 +31,6 @@ dota.getVersion().then((x) => {
   version = x;
 });
 db.loadAllDrafts().then((x) => {
-  console.log(x);
   draftsCache.push(...x);
 });
 
@@ -53,8 +52,33 @@ app.get('/api/drafts', (req, res) => {
 app.get('/api/drafts/:draftId', (req, res) => {
   const { draftId } = req.params;
   const draft = draftsCache.find((x) => x.title == draftId || x._id == draftId);
-  console.log(draftsCache);
   res.status(draft == undefined ? 404 : 200).send(draft);
+});
+
+app.get('/api/draft/random', (req, res) => {
+  const tags = req.query.tags;
+  const drafts = draftsCache.filter(
+    (x) =>
+      x.pos1 != undefined &&
+      ((tags != undefined && tags.split(',').some((y) => x.tags.includes(y))) ||
+        tags == undefined),
+  );
+  const draft = drafts[Math.floor(Math.random() * drafts.length)];
+  res.status(200).send(draft);
+});
+
+app.get('/api/combo/random/:num?', (req, res) => {
+  const num = req.params.num;
+  const tags = req.query.tags;
+  const combos = draftsCache.filter(
+    (x) =>
+      x.heroes != undefined &&
+      (x.heroes.length == num || num == undefined) &&
+      ((tags != undefined && tags.split(',').some((y) => x.tags.includes(y))) ||
+        tags == undefined),
+  );
+  const combo = combos[Math.floor(Math.random() * combos.length)];
+  res.status(200).send(combo);
 });
 
 app.post('/api/draft', async (req, res) => {
@@ -112,6 +136,10 @@ app.post('/api/draft', async (req, res) => {
 });
 
 app.get('/*', (req, res) => {
+  if (req.url.includes('?ssr')) {
+    return res.status(200).send(html);
+  }
+
   const sheet = new ServerStyleSheet();
   const appString = ReactDOMServer.renderToString(
     sheet.collectStyles(
@@ -149,6 +177,8 @@ function validateHeroNames(listOfheroes) {
 function validateHeroName(name) {
   return name == '' || ALL_HEROES.hasOwnProperty(name);
 }
+
+function getDrafts(onlyCombos, tags) {}
 
 app.listen(PORT, () => {
   console.log('Listening on port ', PORT);

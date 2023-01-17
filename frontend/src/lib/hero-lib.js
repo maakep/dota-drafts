@@ -122,6 +122,11 @@ export const ALL_HEROES = {
   Dawnbreaker: 'dawnbreaker',
 };
 
+export const ALL_HERO_OPTIONS = Object.keys(ALL_HEROES).map((x) => ({
+  value: x,
+  label: x,
+}));
+
 export function getHeroInUrl(heroName) {
   return ALL_HEROES[heroName] || heroName.replace(/\s/g, '_').toLowerCase();
 }

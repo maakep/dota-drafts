@@ -6,7 +6,6 @@ import { CenterLayout } from './lib/Layout';
 import { Route, Routes } from 'react-router-dom';
 import { SingleDraftPage } from './components/draft-page';
 import { DraftForm } from './components/draft-form';
-import { ComboForm } from './components/combo-form';
 import { CreateNew } from './components/create-new';
 
 export function App(props) {
@@ -20,7 +19,7 @@ export function App(props) {
           <Routes>
             <Route path='/new' element={<CreateNew />} />
             <Route path='/new/draft' element={<DraftForm />} />
-            <Route path='/new/combo' element={<ComboForm />} />
+            <Route path='/new/combo' element={<DraftForm isCombo />} />
             <Route
               path='/draft/:draftId'
               element={<SingleDraftPage drafts={drafts} />}
