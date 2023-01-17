@@ -30,9 +30,6 @@ let version = new Date();
 dota.getVersion().then((x) => {
   version = x;
 });
-db.loadAllDrafts().then((x) => {
-  draftsCache.push(...x);
-});
 
 const html = fs.readFileSync(
   path.resolve(__dirname, '../../index.html'),
@@ -135,9 +132,14 @@ app.post('/api/draft', async (req, res) => {
   res.status(id != undefined ? 200 : 500).json({ id: id });
 });
 
-app.get('/*', (req, res) => {
+app.get('/*', async (req, res) => {
   if (req.url.includes('?ssr')) {
     return res.status(200).send(html);
+  }
+
+  if (draftsCache.length == 0) {
+    const drafts = await db.loadAllDrafts();
+    draftsCache.push(...drafts);
   }
 
   const sheet = new ServerStyleSheet();
