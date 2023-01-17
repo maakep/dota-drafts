@@ -83,7 +83,7 @@ export function DraftForm({ isCombo }) {
           {isCombo ? (
             <>
               {new Array(comboNum).fill(undefined).map((_, i) => (
-                <HeroInput key={`hero${i}`} label={`hero${i}`} />
+                <HeroInput key={`hero${i}`} label={`hero${i + 1}`} />
               ))}
               <FieldRow>
                 <Label />
