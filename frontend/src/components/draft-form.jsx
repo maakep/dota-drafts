@@ -61,14 +61,21 @@ export function DraftForm({ isCombo }) {
     );
   }
 
-  function NormalInput({ label }) {
+  function NormalInput({ label, textarea }) {
     return (
       <FieldRow>
         <Label>{label}</Label>
-        <HeaderInput
-          {...formMethods.register(label.toLowerCase())}
-          autoComplete='off'
-        />
+        {textarea ? (
+          <Textarea
+            {...formMethods.register(label.toLowerCase())}
+            autoComplete='off'
+          />
+        ) : (
+          <HeaderInput
+            {...formMethods.register(label.toLowerCase())}
+            autoComplete='off'
+          />
+        )}
       </FieldRow>
     );
   }
@@ -79,7 +86,7 @@ export function DraftForm({ isCombo }) {
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <NormalInput label={'Title'} />
-          <NormalInput label={'Description'} />
+          <NormalInput label={'Description'} textarea />
           {isCombo ? (
             <>
               {new Array(comboNum).fill(undefined).map((_, i) => (
@@ -133,6 +140,18 @@ const WideSelect = styled(Select)`
 `;
 
 export const HeaderInput = styled.input`
+  background: #f2f2f2;
+  border: none;
+  padding: 8px;
+  width: 184px;
+
+  &:focus {
+    outline: none;
+    box-shadow: black -1px 1px 3px;
+  }
+`;
+
+const Textarea = styled.textarea`
   background: #f2f2f2;
   border: none;
   padding: 8px;
