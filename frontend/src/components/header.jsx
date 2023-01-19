@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CenterLayout, Row } from '../lib/Layout';
-import { Link } from 'react-router-dom';
+import { UnadornedLink } from '../lib/components';
+import { CenterLayout, RowBetween } from '../lib/Layout';
 
 export function Header() {
   return (
     <Wrapper>
       <CenterLayout>
-        <Row>
-          <Link to={'/'}>
+        <RowBetween>
+          <UnadornedLink to={'/'}>
             <Logo />
-          </Link>
-          <Link to={'/new'}>
+          </UnadornedLink>
+          <UnadornedLink to={'/new'}>
             <AddDraft>create</AddDraft>
-          </Link>
-        </Row>
+          </UnadornedLink>
+        </RowBetween>
       </CenterLayout>
     </Wrapper>
   );
@@ -41,7 +41,6 @@ const AddDraft = styled.div`
   text-align: center;
   cursor: pointer;
   color: #005500;
-  margin-left: auto;
 
   &:hover {
     color: #008800;

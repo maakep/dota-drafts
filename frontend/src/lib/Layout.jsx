@@ -14,6 +14,10 @@ export const Row = styled.div`
   flex-direction: row;
 `;
 
+export const RowBetween = styled(Row)`
+  justify-content: space-between;
+`;
+
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
