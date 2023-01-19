@@ -5,7 +5,7 @@ import { Draft } from './draft';
 export function DraftList(props) {
   return (
     <Column>
-      {props.drafts.reverse().map((d) => (
+      {[...props.drafts].reverse().map((d) => (
         <Draft draft={d} key={d._id} />
       ))}
     </Column>
