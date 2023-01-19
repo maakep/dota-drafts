@@ -1,17 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { CenterLayout, Row } from '../lib/Layout';
+import { Link } from 'react-router-dom';
 
 export function Header() {
-  const navigate = useNavigate();
-
   return (
     <Wrapper>
       <CenterLayout>
         <Row>
-          <Logo onClick={() => navigate('/')} />
-          <AddDraft onClick={() => navigate('/new')}>create</AddDraft>
+          <Link to={'/'}>
+            <Logo />
+          </Link>
+          <Link to={'/new'}>
+            <AddDraft>create</AddDraft>
+          </Link>
         </Row>
       </CenterLayout>
     </Wrapper>
