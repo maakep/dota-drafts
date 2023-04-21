@@ -20,7 +20,7 @@ export function Tags({ formMethods }) {
           autoComplete='off'
         />
       </FieldRow>
-      <DisplayTags tags={tags} />
+      <DisplayTags tags={[...draft.tags, draft.version]} />
     </>
   );
 }

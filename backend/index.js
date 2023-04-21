@@ -138,7 +138,7 @@ app.get('/*', async (req, res) => {
   }
 
   if (draftsCache.length == 0) {
-    const drafts = await db.loadAllDrafts();
+    const drafts = await db.loadAllDrafts(version);
     draftsCache.push(...drafts);
   }
 

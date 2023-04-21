@@ -69,7 +69,7 @@ export function Draft(props) {
         <BetweenRow>
           <Desc>{draft.description}</Desc>
           <div>
-            <DisplayTags randomizeColor tags={draft.tags} />
+            <DisplayTags randomizeColor tags={[...draft.tags, draft.version]} />
           </div>
         </BetweenRow>
       )}
