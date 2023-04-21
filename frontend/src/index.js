@@ -6,6 +6,6 @@ import { App } from './app.jsx';
 const root = hydrateRoot(
   document.getElementById('root'),
   <BrowserRouter>
-    <App drafts={window._draftData} />
+    <App drafts={window._draftData} patch={window._patch} />
   </BrowserRouter>,
 );

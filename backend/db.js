@@ -20,7 +20,7 @@ async function addDraft(obj) {
 async function loadAllDrafts(version = null) {
   const snapshot = await (version == null
     ? collection.get()
-    : collection.where('version', '==', version).get());
+    : collection.where('version', '>=', version).get());
   const data = extractData(snapshot);
 
   if (data == undefined) {

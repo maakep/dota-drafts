@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
 });
 
 const draftsCache = [];
-let version = new Date();
+let version = new Date(); // fallback if it fails to fetch patch
 
 dota.getVersion().then((x) => {
   version = x;
@@ -158,7 +158,10 @@ app.get('/*', async (req, res) => {
       .replace('<stylegoeshere />', styleTags)
       .replace(
         '<datagoeshere />',
-        `<script>window._draftData = ${JSON.stringify(draftsCache)}</script>`,
+        `<script>
+          window._draftData = ${JSON.stringify(draftsCache)}
+          window._patch = ${version}
+        </script>`,
       )
       .replace('></div>', `>${appString}</div>`),
   );

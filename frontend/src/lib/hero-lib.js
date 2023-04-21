@@ -120,6 +120,9 @@ export const ALL_HEROES = {
   Snapfire: 'snapfire',
   Hoodwink: 'hoodwink',
   Dawnbreaker: 'dawnbreaker',
+  Marci: 'marci',
+  'Primal Beast': 'primal_beast',
+  Muerta: 'muerta',
 };
 
 export const ALL_HERO_OPTIONS = Object.keys(ALL_HEROES).map((x) => ({
