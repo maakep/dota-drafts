@@ -9,7 +9,7 @@
     "frontend": "webpack --mode production",
     "frontend:build": "webpack --mode development",
     "frontend:watch": "webpack --watch --mode development",
-    "backend": "webpack --mode production --config webpack.server.js && node backend/dist/bundle.server.js",
+    "backend": "webpack --mode production --config webpack.server.js",
     "backend:debug": "set GOOGLE_APPLICATION_CREDENTIALS=./servicekey.json&& webpack --mode development --config webpack.server.js && node backend/dist/bundle.server.js"
   },
   "dependencies": {

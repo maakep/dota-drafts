@@ -1,7 +1,8 @@
-FROM node:19-alpine3.16
-
+FROM node:19-alpine3.16 AS builder
 WORKDIR /app
-
 COPY / ./
+CMD [ "npm", "run", "full-build" ]
 
-CMD [ "npm", "start" ]
+FROM builder 
+CMD ["npm", "start"]
+
