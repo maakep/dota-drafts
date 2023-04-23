@@ -23,7 +23,7 @@
         "--image",
         "gcr.io/$PROJECT_ID/dota_drafts_image:$COMMIT_SHA",
         "--region",
-        "europe-north1-a",
+        "europe-north1",
         "--allow-unauthenticated"
       ]
     }
