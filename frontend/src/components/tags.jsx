@@ -30,11 +30,13 @@ export function DisplayTags({ tags, randomizeColor }) {
 
   return (
     <TagWrapper>
-      {[...new Set(tags)].map((x, i) => (
-        <Tag key={x} color={randomizeColor ? randomColor() : colors[i]}>
-          {x}
-        </Tag>
-      ))}
+      {[...new Set(tags)]
+        .filter((x) => x?.length)
+        .map((x, i) => (
+          <Tag key={x} color={randomizeColor ? randomColor() : colors[i]}>
+            {x}
+          </Tag>
+        ))}
     </TagWrapper>
   );
 }

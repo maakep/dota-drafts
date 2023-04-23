@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import { SingleDraftPage } from './components/draft-page';
 import { DraftForm } from './components/draft-form';
 import { CreateNew } from './components/create-new';
+import { DraftEditWrapper } from './components/draft-edit';
 
 export function App(props) {
   const { drafts } = props;
@@ -20,6 +21,10 @@ export function App(props) {
             <Route path='/new' element={<CreateNew />} />
             <Route path='/new/draft' element={<DraftForm />} />
             <Route path='/new/combo' element={<DraftForm isCombo />} />
+            <Route
+              path='/draft/:draftId/edit'
+              element={<DraftEditWrapper drafts={drafts} />}
+            />
             <Route
               path='/draft/:draftId'
               element={<SingleDraftPage drafts={drafts} />}

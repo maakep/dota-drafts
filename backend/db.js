@@ -11,8 +11,8 @@ function extractData(snapshot) {
   return dataArray;
 }
 
-async function addDraft(obj) {
-  const docRef = collection.doc();
+async function addDraft(obj, draftId) {
+  const docRef = draftId ? collection.doc(draftId) : collection.doc();
   await docRef.set(obj);
   return docRef.id;
 }

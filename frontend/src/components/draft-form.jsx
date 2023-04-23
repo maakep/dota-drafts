@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { Row } from '../lib/Layout';
@@ -7,9 +7,25 @@ import Select from 'react-select';
 import { ALL_HERO_OPTIONS } from '../lib/hero-lib';
 import { Tags } from './tags';
 
-export function DraftForm({ isCombo }) {
-  const formMethods = useForm();
-  const [comboNum, setComboNum] = useState(2);
+export function DraftForm({ isCombo, draft }) {
+  const formMethods = useForm({
+    defaultValues: {
+      title: draft?.title,
+      description: draft?.description,
+      pos1: draft?.pos1,
+      pos2: draft?.pos2,
+      pos3: draft?.pos3,
+      pos4: draft?.pos4,
+      pos5: draft?.pos5,
+      hero1: draft?.heroes?.[0],
+      hero2: draft?.heroes?.[1],
+      hero3: draft?.heroes?.[2],
+      hero4: draft?.heroes?.[3],
+      hero5: draft?.heroes?.[4],
+      tags: draft?.tags.join(', '),
+    },
+  });
+  const [comboNum, setComboNum] = useState(draft?.heroes?.length || 2);
 
   async function onSubmit(d) {
     const body = isCombo
@@ -29,6 +45,10 @@ export function DraftForm({ isCombo }) {
           pos5: d.pos5,
           tags: d.tags.split(',').map((x) => x.trim()),
         };
+
+    if (draft != undefined) {
+      body.draftId = draft._id;
+    }
 
     const res = await fetch('/api/draft', {
       method: 'POST',
@@ -54,6 +74,7 @@ export function DraftForm({ isCombo }) {
               key={label}
               options={ALL_HERO_OPTIONS}
               onChange={(val) => field.onChange(val.value)}
+              instanceId={useId()}
             />
           )}
         />
@@ -82,7 +103,7 @@ export function DraftForm({ isCombo }) {
 
   return (
     <Wrapper>
-      <h1>Create new draft</h1>
+      <h1>Create new {isCombo ? 'combo' : 'draft'}</h1>
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <NormalInput label={'Title'} />

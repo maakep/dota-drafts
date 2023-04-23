@@ -24,7 +24,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("That ain't right");
 });
 
-const draftsCache = [];
+let draftsCache = [];
 let version = new Date(); // fallback if it fails to fetch patch
 
 dota.getVersion().then((x) => {
@@ -82,6 +82,8 @@ app.post('/api/draft', async (req, res) => {
   const { pos1, pos2, pos3, pos4, pos5, title, description, tags, heroes } =
     req.body;
 
+  const updateDraftId = req.body.draftId;
+
   const draft = {
     pos1,
     pos2,
@@ -117,16 +119,30 @@ app.post('/api/draft', async (req, res) => {
   ) {
     return res.status(400).send('Missing position or incorrect hero name');
   }
-  const id = await db.addDraft({
-    ...(isCombo ? combo : draft),
-    version: version,
-  });
+  const id = await db.addDraft(
+    {
+      ...(isCombo ? combo : draft),
+      version: version,
+    },
+    updateDraftId,
+  );
 
   if (id) {
-    draftsCache.push({
+    const obj = {
       ...(isCombo ? combo : draft),
       _id: id,
-    });
+    };
+
+    if (updateDraftId) {
+      const itemIndex = draftsCache.findIndex((x) => x._id == updateDraftId);
+      draftsCache = [
+        ...draftsCache.slice(0, itemIndex),
+        obj,
+        ...draftsCache.slice(itemIndex + 1),
+      ];
+    } else {
+      draftsCache.push(obj);
+    }
   }
 
   res.status(id != undefined ? 200 : 500).json({ id: id });
