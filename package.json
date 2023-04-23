@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm ci && npm run frontend && npm run backend",
+    "start": "node backend/dist/bundle.server.js",
+    "full-build": "npm ci && npm run frontend && npm run backend",
     "frontend": "webpack --mode production",
     "frontend:build": "webpack --mode development",
     "frontend:watch": "webpack --watch --mode development",
