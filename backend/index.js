@@ -157,7 +157,7 @@ app.get('/*', async (req, res) => {
   if (draftsCache.length == 0) {
     version = await dota.getVersion();
     const drafts = await db.loadAllDrafts(version);
-    draftsCache.push(...drafts);
+    draftsCache = [...drafts];
   }
 
   const sheet = new ServerStyleSheet();
