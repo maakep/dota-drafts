@@ -25,11 +25,7 @@ app.use((err, req, res, next) => {
 });
 
 let draftsCache = [];
-let version = new Date(); // fallback if it fails to fetch patch
-
-dota.getVersion().then((x) => {
-  version = x;
-});
+let version = null;
 
 const html = fs.readFileSync(
   path.resolve(__dirname, '../../index.html'),
@@ -119,6 +115,11 @@ app.post('/api/draft', async (req, res) => {
   ) {
     return res.status(400).send('Missing position or incorrect hero name');
   }
+
+  if (version == null) {
+    version = await dota.getVersion();
+  }
+
   const id = await db.addDraft(
     {
       ...(isCombo ? combo : draft),
@@ -154,6 +155,7 @@ app.get('/*', async (req, res) => {
   }
 
   if (draftsCache.length == 0) {
+    version = await dota.getVersion();
     const drafts = await db.loadAllDrafts(version);
     draftsCache.push(...drafts);
   }

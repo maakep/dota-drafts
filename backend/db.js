@@ -17,10 +17,10 @@ async function addDraft(obj, draftId) {
   return docRef.id;
 }
 
-async function loadAllDrafts(version = null) {
-  const snapshot = await (version == null
-    ? collection.get()
-    : collection.where('version', '>=', version).get());
+async function loadAllDrafts(version) {
+  const snapshot = await collection
+    .where('version', '>=', version.slice(0, 4))
+    .get();
   const data = extractData(snapshot);
 
   if (data == undefined) {
