@@ -4,8 +4,6 @@
       "name": "gcr.io/cloud-builders/docker",
       "args": [
         "build",
-        "--target",
-        "builder",
         "-t",
         "gcr.io/$PROJECT_ID/dota_drafts_image:$COMMIT_SHA",
         "./"
