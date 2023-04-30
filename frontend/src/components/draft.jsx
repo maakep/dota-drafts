@@ -126,6 +126,8 @@ const Hero = styled.div`
   height: 63px;
   width: 112px;
   background-color: #c5c5c5;
+  border-radius: 5px;
+
   ${(p) =>
     p.hero &&
     `background: linear-gradient(

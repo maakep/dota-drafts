@@ -177,8 +177,8 @@ app.get('/*', async (req, res) => {
       .replace(
         '<datagoeshere />',
         `<script>
-          window._draftData = ${JSON.stringify(draftsCache)}
-          window._patch = ${version}
+          window._draftData = ${JSON.stringify(draftsCache)};
+          window._patch = '${version}';
         </script>`,
       )
       .replace('></div>', `>${appString}</div>`),
