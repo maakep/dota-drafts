@@ -15,6 +15,9 @@ const dota = require('./dota');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+let draftsCache = [];
+let version = null;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/public', express.static('public'));
@@ -24,8 +27,18 @@ app.use((err, req, res, next) => {
   res.status(500).send("That ain't right");
 });
 
-let draftsCache = [];
-let version = null;
+// Make sure cache is set before any request
+app.use(async (req, res, next) => {
+  if (version == null) {
+    version = await dota.getVersion();
+  }
+
+  if (draftsCache.length == 0) {
+    draftsCache = await db.loadAllDrafts(version);
+  }
+
+  next();
+});
 
 const html = fs.readFileSync(
   path.resolve(__dirname, '../../index.html'),
@@ -116,10 +129,6 @@ app.post('/api/draft', async (req, res) => {
     return res.status(400).send('Missing position or incorrect hero name');
   }
 
-  if (version == null) {
-    version = await dota.getVersion();
-  }
-
   const id = await db.addDraft(
     {
       ...(isCombo ? combo : draft),
@@ -152,12 +161,6 @@ app.post('/api/draft', async (req, res) => {
 app.get('/*', async (req, res) => {
   if (req.url.includes('?ssr')) {
     return res.status(200).send(html);
-  }
-
-  if (draftsCache.length == 0) {
-    version = await dota.getVersion();
-    const drafts = await db.loadAllDrafts(version);
-    draftsCache = [...drafts];
   }
 
   const sheet = new ServerStyleSheet();
@@ -200,8 +203,6 @@ function validateHeroNames(listOfheroes) {
 function validateHeroName(name) {
   return name == '' || ALL_HEROES.hasOwnProperty(name);
 }
-
-function getDrafts(onlyCombos, tags) {}
 
 app.listen(PORT, () => {
   console.log('Listening on port ', PORT);
