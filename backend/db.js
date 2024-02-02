@@ -18,9 +18,9 @@ async function addDraft(obj, draftId) {
 }
 
 async function loadAllDrafts(version) {
-  const snapshot = await collection
-    .where('version', '>=', version.slice(0, 4))
-    .get();
+  const snapshot = await collection.get();
+  // .where('version', '>=', version.slice(0, 4))
+
   const data = extractData(snapshot);
 
   if (data == undefined) {
